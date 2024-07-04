@@ -1,0 +1,43 @@
+```{python}
+from transformers import TapasTokenizer, TapasForQuestionAnswering
+import duckdb
+```
+
+
+```{python}
+# Create loader
+from transformers import AutoTokenizer, AutoModelForQuestionAnswering
+import torch
+
+tokenizer = AutoTokenizer.from_pretrained("bert-large-uncased-whole-word-masking-finetuned-squad")
+model = AutoModelForQuestionAnswering.from_pretrained("bert-large-uncased-whole-word-masking-finetuned-squad")
+
+text = """
+Im Jahr 2011 wurden in Deutschland für interne FuE-Aufwendungen im Bereich Architektur-, Ingenieurbüros, technische, physikalische und chemische Untersuchungen 1.296.349 Tausend Euro ausgegeben. 1987 belief sich das FuE-Personal im gesamten Wirtschaftssektor auf 295.332 Vollzeitäquivalente (VZÄ). 2016 wurden für FuE-Personal im Sektor der freiberuflichen, wissenschaftlichen und technischen Dienstleistungen 47.551 VZÄ gemeldet, während die internen FuE-Aufwendungen im Bergbau und der Gewinnung von Steinen und Erden 21.318 Tausend Euro erreichten. Im Maschinenbau wurden 2017 49.323 VZÄ für FuE-Personal gezählt. Die internen FuE-Aufwendungen im Jahr 2004 im gesamten Wirtschaftssektor erreichten 38.363.000 Tausend Euro.
+
+In der Architektur und ähnlichen Büros wurden 2014 84.855 Tausend Euro für externe FuE-Aufwendungen und 2016 1.732.000 Tausend Euro für interne Aufwendungen im Luft- und Raumfahrzeugbau aufgewendet. 2014 wurden in den Finanz- und Versicherungsdienstleistungen 318.000 Tausend Euro und 2010 in der Herstellung von Glas und Glaswaren, Keramik sowie der Verarbeitung von Steinen und Erden 285.334 Tausend Euro für interne FuE-Aufwendungen verzeichnet. 2012 wurden in der Herstellung von DV-Geräten und optischen Erzeugnissen 7.391.756 Tausend Euro für interne FuE-Aufwendungen ausgegeben.
+"""
+
+questions = [
+    "Ausgaben in Euro für interne FuE-Aufwendungen? im Jahr 2011",
+    "Wie viel wurde im Maschinenbau ausgegeben?",
+    "Ausgaben für Herstellung von DV-Geräten und optischen Erzeugnissen?",
+]
+
+for question in questions:
+    inputs = tokenizer.encode_plus(question, text, add_special_tokens=True, return_tensors="pt")
+    input_ids = inputs["input_ids"].tolist()[0]
+
+    text_tokens = tokenizer.convert_ids_to_tokens(input_ids)
+    outputs = model(**inputs)
+    answer_start_scores, answer_end_scores = outputs.start_logits, outputs.end_logits
+
+    answer_start = torch.argmax(answer_start_scores)  # Get the most likely beginning of answer with the argmax of the score
+    answer_end = torch.argmax(answer_end_scores) + 1  # Get the most likely end of answer with the argmax of the score
+
+    answer = tokenizer.convert_tokens_to_string(tokenizer.convert_ids_to_tokens(input_ids[answer_start:answer_end]))
+
+    print(f"Question: {question}")
+    print(f"Answer: {answer}\n")
+
+```
