@@ -1,0 +1,102 @@
+Um einen einfachen Chatbot mit DistilBERT zu entwickeln, der spezifische Datenfragen beantworten kann, folgen hier detaillierte Anweisungen für die einzelnen Schritte:
+
+### Schritt 1: Einrichten der Umgebung
+
+Zuerst müssen Sie sicherstellen, dass Sie die notwendigen Bibliotheken installiert haben. Installieren Sie die Python-Bibliothek `transformers` von Hugging Face und `torch` für die Verarbeitung:
+
+```bash
+pip install transformers torch
+```
+
+### Schritt 2: Daten vorbereiten
+
+Ihre Daten sollten in einem Format vorliegen, das `context`, `question` und `answer` für das Training des Modells beinhaltet. Die Daten sollten als Liste von Dictionaries strukturiert sein:
+
+```{python}
+data = [
+    {
+        'context': "id: 338\nvariable: Interne FuE-Aufwendungen\nzeit_start: 2007-01-01 00:00:00\nzeit_ende: 2007-12-31 23:59:59\nzeit_einheit: Jahr\nreichweite: Wirtschaftssektor,Deutschland,Holzwirtschaft\nwert: 16789\nwert_einheit: in Tsd. Euro\nquelle: FuE-Erhebung\ntag: Forschung und Entwicklung,Wirtschaft,Datensatz,FuE-Erhebung (Wirtschaft)",
+        'question': "Wie hoch waren die internen FuE-Aufwendungen im Jahr 2007 im Wirtschaftszweig Holzwirtschaft?",
+        'answer': "16789 in Tsd. Euro"
+    },
+    # Fügen Sie weitere Einträge hinzu
+]
+```
+
+### Schritt 3: Feinabstimmung von DistilBERT
+
+Um das Modell zu trainieren, verwenden Sie das `DistilBertForQuestionAnswering` Modell von Hugging Face, das speziell für Frage-Antwort-Aufgaben entwickelt wurde.
+
+```{python}
+from transformers import DistilBertTokenizerFast, DistilBertForQuestionAnswering, TrainingArguments, Trainer
+
+# Laden des Tokenizers und Modells
+tokenizer = DistilBertTokenizerFast.from_pretrained('distilbert-base-german-cased')
+model = DistilBertForQuestionAnswering.from_pretrained('distilbert-base-german-cased')
+
+# Vorbereiten der Trainingsdaten
+train_encodings = tokenizer(
+    [x['context'] for x in data], 
+    [x['question'] for x in data], 
+    truncation=True, 
+    padding=True, 
+    max_length=512,
+    return_tensors='pt'
+)
+
+# Labels für die Antwortpositionen hinzufügen
+def add_token_positions(encodings, answers):
+    start_positions = []
+    end_positions = []
+    for i in range(len(answers)):
+        start_positions.append(encodings.char_to_token(i, answers[i]['answer_start']))
+        end_positions.append(encodings.char_to_token(i, answers[i]['answer_end'] - 1))
+    encodings.update({'start_positions': start_positions, 'end_positions': end_positions})
+
+# Fügen Sie hier die korrekten Start- und Endpositionen Ihrer Antworten hinzu
+add_token_positions(train_encodings, data)
+
+# Trainingseinstellungen
+training_args = TrainingArguments(
+    output_dir='./results',
+    num_train_epochs=3,
+    per_device_train_batch_size=2,
+    warmup_steps=500,
+    weight_decay=0.01,
+    logging_dir='./logs',
+    logging_steps=10,
+)
+
+# Trainer-Instanz erstellen
+trainer = Trainer(
+    model=model,
+    args=training_args,
+    train_dataset=train_encodings,
+    eval_dataset=train_encodings
+)
+
+# Modell trainieren
+trainer.train()
+```
+
+### Schritt 4: Verwenden des Modells zur Beantwortung von Fragen
+
+Nachdem das Modell trainiert wurde, können Sie es verwenden, um Fragen zu beantworten:
+
+```{python}
+def ask(question, context):
+    inputs = tokenizer(question, context, return_tensors='pt', truncation=True, padding=True, max_length=512)
+    outputs = model(**inputs)
+    answer_start = torch.argmax(outputs.start_logits)
+    answer_end = torch.argmax(outputs.end_logits) + 1
+    return tokenizer.convert_tokens_to_string(tokenizer.convert_ids_to_tokens(inputs['input_ids'][0][answer_start:answer_end]))
+
+# Testen Sie das Modell
+context = data[0]['context']
+question = "Wie hoch waren die internen FuE-Aufwendungen im Jahr 2007 im Wirtschaftszweig Holzwirtschaft?"
+print(ask(question, context))
+```
+
+Dieser Prozess setzt grundlegende Kenntnisse in Python und maschinellem
+
+ Lernen voraus. Stellen Sie sicher, dass Ihr System ausreichend Ressourcen hat, um ein neuronales Netzwerk zu trainieren.
