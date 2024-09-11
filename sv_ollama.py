@@ -26,13 +26,28 @@ system_prompt = f"Du bist ein Deutsch sprechender AI assistent der Nutzern Frage
 if 'chat_history' not in st.session_state:
     st.session_state.chat_history = [{"role": "system", "content": system_prompt}]
 
-st.title("Olama Chatbot - Dialog mit Verlauf")
+st.title("Olama Chatbot - Dialog mit Chat-Verlauf")
 
-# Textfeld für Benutzereingabe (Frage)
-user_question = st.text_input("Stelle eine Frage zum obigen Text:", "")
+# Container für den Nachrichtenverlauf
+chat_container = st.container()
+
+# Zeige den gesamten Dialogverlauf in einem abwechselnden Format
+with chat_container:
+    if st.session_state.chat_history:
+        for message in st.session_state.chat_history:
+            if message['role'] == 'user':
+                st.markdown(f"**Du**: {message['content']}")
+            elif message['role'] == 'assistant':
+                st.markdown(f"**Bot**: {message['content']}")
+
+# Separator, um den Verlauf vom Eingabefeld zu trennen
+st.markdown("---")
+
+# Eingabefeld für die Frage des Nutzers
+user_question = st.text_input("Deine Frage:", "")
 
 # Wenn der Benutzer eine Frage stellt und auf den Button klickt
-if st.button("Frage stellen"):
+if st.button("Senden"):
     if user_question.strip():
         # Füge die Benutzerfrage dem Verlauf hinzu
         st.session_state.chat_history.append({"role": "user", "content": user_question})
@@ -47,16 +62,13 @@ if st.button("Frage stellen"):
         # Füge die Antwort des Modells zum Verlauf hinzu
         st.session_state.chat_history.append({"role": "assistant", "content": response['message']['content']})
 
-        # Zeige die Antwort an
-        st.write(f"Antwort: {response['message']['content']}")
+        # Scroll automatisch zum letzten Chat-Eintrag
+        chat_container.empty()  # Leere den Container, um den neuen Verlauf darzustellen
+        with chat_container:
+            for message in st.session_state.chat_history:
+                if message['role'] == 'user':
+                    st.markdown(f"**Du**: {message['content']}")
+                elif message['role'] == 'assistant':
+                    st.markdown(f"**Bot**: {message['content']}")
     else:
         st.write("Bitte gib eine Frage ein.")
-
-# Zeige den gesamten Dialogverlauf an
-if st.session_state.chat_history:
-    st.write("### Chat-Verlauf")
-    for message in st.session_state.chat_history:
-        if message['role'] == 'user':
-            st.write(f"**Du**: {message['content']}")
-        elif message['role'] == 'assistant':
-            st.write(f"**Bot**: {message['content']}")
