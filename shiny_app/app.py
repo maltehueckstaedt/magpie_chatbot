@@ -24,12 +24,16 @@ system_prompt = f"Du bist ein Deutsch sprechender AI Assistent der Nutzern Frage
 
 # Shiny UI Layout
 app_ui = ui.page_fluid(
-    ui.layout_sidebar(
-        ui.sidebar(
-            ui.input_text("user_question", "Stelle eine Frage:", placeholder="Frage eingeben..."),
-            ui.input_action_button("senden", "Senden")
-        ),
-        ui.output_text("chat_output")
+    # Ein Container für den Chat-Verlauf
+    ui.div(
+        ui.output_ui("chat_output"),  # Ändere output_text zu output_ui
+        style="height: 80vh; overflow-y: auto; padding: 10px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 5px;"
+    ),
+    # Eingabefeld und Senden-Button unten fixieren
+    ui.div(
+        ui.input_text("user_question", "Deine Nachricht:", placeholder="Sende eine Nachricht an SV OLLAMA..."),
+        ui.input_action_button("senden", "Senden"),
+        style="position: fixed; bottom: 10px; left: 10px; right: 10px; background-color: #fff; padding: 10px; border-top: 1px solid #ddd;"
     )
 )
 
@@ -60,16 +64,16 @@ def server(input, output, session):
     
     # Den gesamten Verlauf formatieren und anzeigen
     @output
-    @render.text
+    @render.ui
     def chat_output():
         messages = chat_state.get()
         history_text = ""
         for message in messages:
             if message['role'] == 'user':
-                history_text += f"**Du**: {message['content']}\n\n"
+                history_text += f"<b>Du</b>: {message['content']}<br><br>"
             elif message['role'] == 'assistant':
-                history_text += f"**Bot**: {message['content']}\n\n"
-        return history_text
+                history_text += f"<b>Bot</b>: {message['content']}<br><br>"
+        return ui.HTML(history_text)  # Verwende ui.HTML, um HTML-Inhalte korrekt zu rendern
 
 # Shiny App-Objekt
 app = App(app_ui, server)

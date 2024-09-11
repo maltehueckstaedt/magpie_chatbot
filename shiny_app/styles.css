@@ -1,0 +1,33 @@
+/* Styles für den Chat-Verlauf */
+.chat-container {
+    height: 80vh;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Styles für das Eingabefeld und den Button */
+.input-container {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    background-color: #fff;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+}
+
+.chat-input {
+    width: 90%;
+    height: 60px;
+    font-size: 16px;
+    padding: 10px;
+}
+
+.send-button {
+    width: 8%;
+    height: 60px;
+    font-size: 16px;
+}
