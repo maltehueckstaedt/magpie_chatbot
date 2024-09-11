@@ -74,6 +74,10 @@ def server(input, output, session):
 
             # Füge die Antwort des Modells zum Verlauf hinzu
             chat_state.set(chat_state.get() + [{"role": "assistant", "content": response['message']['content']}])
+
+            # Lösche den Inhalt des Eingabefelds nach dem Senden der Nachricht
+            ui.update_text("user_question", value="")
+
     
     # Den gesamten Verlauf formatieren und anzeigen
     @output
