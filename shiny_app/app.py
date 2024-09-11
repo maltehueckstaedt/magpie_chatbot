@@ -20,12 +20,32 @@ Im Maschinenbau wurden 2017 49.323 VZÄ im Bereich Forschung und Entwicklung ver
 2016 wurden im Luft- und Raumfahrzeugbau 1.732.000 Tausend Euro für interne Forschung und Entwicklung aufgewendet. 
 In den Finanz- und Versicherungsdienstleistungen wurden 2014 318.000 Tausend Euro und 2010 in der Herstellung von Glas, Keramik sowie in der Verarbeitung von Steinen 285.334 Tausend Euro für interne Forschung und Entwicklung verzeichnet.
 
-Mit dem Higher Education Explorer (HEX) baut der Stifterverband eine neue Datenbank auf. In ihr werden erstmals Inhalte der Vorlesungsverzeichnisse von Hochschulen in Deutschland gesammelt.
+Was ist HEX?
+Die Abkürzung HEX steht für Higher Education Explorer. HEX ist eine Datenbank, in der die Daten aus Vorlesungsverzeichnissen von Hochschulen vereinheitlicht und zusammengefasst werden. Anhand dieses Datenpools lassen sich vielfältige Recherchen und Analysen durchführen und Entwicklungen rund um die Hochschullehre entdecken und aufzeigen. HEX wurde bisher als Beta-Version veröffentlicht. HEX ist ein Projekt des Stifterverbandes und wird unterstützt von der Heinz Nixdorf Stiftung.
 
-Vorlesungsverzeichnisse sind ein Spiegel der Lehre an Hochschulen: Inhalte der Lehrveranstaltungen, Formate, Sprachen und vieles mehr werden dort Semester für Semester festgehalten. Bislang wurde dieser Datenfundus jedoch nicht systematisch erfasst - nun soll er für die Hochschulforschung und Hochschulentwicklung nutzbar gemacht werden.
+Welches Problem löst HEX?
+Der Higher Education Explorer schafft Transparenz über die Inhalte und Struktur der deutsche Hochschullehre sowie relevante Trends und Veränderungen, indem er große Datenmengen bis auf die Ebene des einzelnen Hochschulkurses durchsucht und auswertet. Bisher war dies nur auf Studiengangsebene möglich. HEX ersetzt aufwändige Auszählungen einzelner Vorlesungsverzeichnisse.
 
-Das Projekt wird unterstützt von der Heinz-Nixdorf-Stiftung
-Der Higher Education Explorer ist im September 2024 in einer Beta-Version an den Start gegangen. Die kontinuierlich wachsende Datenbank enthält bereits jetzt mehr als zwei Millionen Daten zu Lehrveranstaltungen sowie relevante Begleitdaten der Hochschulstatistik. Die Daten stammen von 22 deutschen Universitäten, darunter 15 der größten Universitäten. Damit bildet der HEX das Studienangebot für rund 23 Prozent der Studierenden ab.
+Ist HEX ein Unikat oder gibt es vergleichbare Datenbasen und Werkzeuge?
+Für die Analyse von Veranstaltungen gibt es unseres Wissens kein vergleichbares Projekt. Zur Vereinfachung von Modulanrechnungen existiert das Projekt PIM und für Literaturverwendung Open Syllabus aus den USA.
+
+Für wen ist HEX wichtig?
+HEX ist wichtig für die Beteiligten der Hochschulleitung, Hochschulentwicklung, und Hochschulforschung und die an diesen Themen interessierte Fachöffentlichkeit. Die Universitäten in der Datenbank erhalten individuelle Auswertungen, um schnell einen umfassenden Blick auf ihr Lehrangebot zu bekommen und datenbasierte Entscheidungen für Lehre und Studium treffen zu können. Mit dem HEX haben sie die Möglichkeit, die eigene Strategie zu prüfen, Standortvorteile zu erkennen und hervorzuheben oder frühzeitig Entwicklungen in der Lehre anzustoßen. Gleichzeitig werden Analysen über die allgemeine Entwicklung des Lehrangebots in Deutschland erstellt und für die Allgemeinheit zur Verfügung gestellt.  
+
+Auf welche Daten und welche Datenmengen greift HEX aktuell zu?
+Auf welche kann er perspektivisch zugreifen? HEX ist eine kontinuierlich wachsende Datenbank, die momentan mehr als zwei Millionen Daten zu Lehrveranstaltungen sowie relevante Begleitdaten der Hochschulstatistik enthält. Die Daten stammen von 22 deutschen Universitäten, darunter 15 der größten Universitäten. Damit bildet der HEX das Studienangebot für rund 23 Prozent der Studierenden ab. Ob sich das Konzept auch auf HAWs/Fachhochschulen, private Hochschulen und/oder internationale Hochschulen übertragen lässt, wird in einer späteren Phase geprüft.
+
+Welche Themen bzw. Fragen kann HEX untersuchen und in welcher Form präsentiert er die Ergebnisse?
+HEX bietet eine Vielzahl von Analysemöglichkeiten, in denen die Grunddaten und Kennzahlen zu Kursen, Lehrformaten, Lehrsprachen, Studierende pro Kurs, wissenschaftliches Personal pro Kurs und Professorin bzw. Professor bis auf die Ebene der Studienbereiche miteinander verknüpft werden können. Darüber hinaus entstehen im HEX-Forschungsprojekt inhaltliche Analysen zu Trends in Lehrthemen, Lehrprofile der Hochschule oder Future Skills. Die methodische Vielfalt reicht dabei von Stichwortauszählungen bis zum maschinellen Lernen.
+
+Wie lange würde eine HEX-Analyse dauern?
+Einfache Veranstaltungsrecherchen lassen sich schnell umsetzen. Umfassende wissenschaftliche Analysen, bei denen auch andere Daten und Literatur einbezogen, die Limitationen so weit wie möglich eingrenzt und die Ergebnisse eingeordnet werden, sind aufwändiger – die genaue Dauer ist dabei individuell abzuschätzen.  
+
+Wer kann auf HEX zugreifen?
+Der Stifterverband hat bereits mit Partnerstiftungen erste Analysen erarbeitet und wird sukzessive weitere Studienergebnisse veröffentlichen. Wir möchten gerne mit weiteren Partnern aus der Hochschul- und Wissenschaftsforschung zusammenarbeiten. Kommen Sie mit Studienideen gerne auf uns zu!
+
+An wen kann ich mich wenden?
+Schreiben Sie uns eine Mail an hex@stifterverband.de und wir gehen ins Gespräch. 
 """
 
 # System Prompt für das Modell
