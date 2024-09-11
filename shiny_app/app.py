@@ -29,7 +29,7 @@ Der Higher Education Explorer ist im September 2024 in einer Beta-Version an den
 """
 
 # System Prompt für das Modell
-system_prompt = f"Du bist ein Deutsch sprechender AI Assistent der Nutzern Fragen über folgenden Inhalt beantwortet: \n{text}\n Antworte kurz und immer auf Deutsch!."
+system_prompt = f"Du bist Shiny SV, ein Deutsch sprechender AI Assistent der Nutzern Fragen über folgenden Inhalt beantwortet: \n{text}\n Antworte kurz und immer auf Deutsch!."
 
 # Shiny UI Layout
 app_ui = ui.page_fluid(

@@ -62,7 +62,7 @@ html, body {
 
 .send-button {
     font-size: 16px; /* Schriftgröße passend zum Textfeld */
-    background-color: #007bff; /* Blaue Farbe für den Button */
+    background-color: #086873; /* Blaue Farbe für den Button */
     color: white; /* Schriftfarbe weiß */
     border: none; /* Rahmen entfernen */
     border-radius: 55px; /* Abgerundete Ecken */
@@ -77,17 +77,24 @@ html, body {
 
 /* Hover-Zustand */
 .send-button:hover {
-    background-color: #0056b3; /* Neue Farbe bei Hover */
+    background-color: #2ca9b7; /* Neue Farbe bei Hover */
     color: #fff; /* Optional: Schriftfarbe ändern, falls nötig */
 }
 
 
 #user_question {
-    height: 40px; /* Höhe auf 50px erhöhen */
-    padding: 10px; /* Optional: Polsterung anpassen */
-    font-size: 16px; /* Optional: Schriftgröße anpassen */
+    height: 40px;
+    width: 400px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc; /* Optional: eigene Rahmenfarbe */
 }
 
+#user_question:focus { 
+    box-shadow: none; /* Entfernt das blaue Leuchten (Shadow) */
+}
+
+ 
 body, .chat-container, .input-container, .input-row {
     font-family: 'Calibri', sans-serif;
 }
