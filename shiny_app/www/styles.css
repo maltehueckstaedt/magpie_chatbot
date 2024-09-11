@@ -1,0 +1,62 @@
+/* Vollbild-Container, um die App in der Mitte zu platzieren */
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f4f4f4; /* Hintergrundfarbe für den Gesamthintergrund */
+}
+
+/* Container für den gesamten App-Bereich */
+.chat-container, .input-container {
+    max-width: 600px;  /* Begrenzung der maximalen Breite */
+    width: 100%;       /* Volle Breite für kleinere Bildschirme */
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+/* Chatverlauf anpassen */
+.chat-container {
+    height: 80vh;
+    overflow-y: auto;
+}
+
+/* Eingabebereich unten */
+.input-container {
+    position: relative; /* keine feste Positionierung mehr, da alles zentriert ist */
+}
+
+/* Eingabefeld und Button im selben Bereich */
+.input-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Styling für den User- und Assistant-Chatverlauf */
+.user-message {
+    text-align: right;
+    margin: 10px 0;
+}
+
+.user-message span {
+    background-color: #d1e7dd;
+    padding: 10px;
+    border-radius: 10px;
+    display: inline-block;
+    max-width: 80%;
+}
+
+.assistant-message {
+    text-align: left;
+    margin: 10px 0;
+}
+
+.assistant-message span {
+    background-color: #f8d7da;
+    padding: 10px;
+    border-radius: 10px;
+    display: inline-block;
+    max-width: 80%;

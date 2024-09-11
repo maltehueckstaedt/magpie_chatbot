@@ -1,5 +1,7 @@
 from shiny import App, reactive, render, ui
 import ollama
+from pathlib import Path
+
 
 # Modell ID
 MODEL_ID = "llama3.1:8b-instruct-q4_0"
@@ -31,18 +33,21 @@ system_prompt = f"Du bist ein Deutsch sprechender AI Assistent der Nutzern Frage
 
 # Shiny UI Layout
 app_ui = ui.page_fluid(
-    # Ein Container für den Chat-Verlauf
+    ui.include_css(Path(__file__).parent / "www" / "styles.css"),  # CSS-Datei einbinden
     ui.div(
         ui.output_ui("chat_output"),
-        style="height: 80vh; overflow-y: auto; padding: 20px; background-color: #f0f0f0; border-radius: 10px;"
+        class_="chat-container"
     ),
-    # Eingabefeld und Senden-Button unten fixieren
     ui.div(
-        ui.input_text("user_question", "", placeholder="Sende eine Nachricht..."),
-        ui.input_action_button("senden", "Senden"),
-        style="position: fixed; bottom: 10px; left: 10px; right: 10px; background-color: #ffffff; padding: 15px; border-radius: 10px; box-shadow: 0px -2px 10px rgba(0,0,0,0.1);"
+        ui.div(
+            ui.input_text("user_question", "", placeholder="Sende eine Nachricht..."),
+            ui.input_action_button("senden", ">"),
+            class_="input-row"
+        ),
+        class_="input-container"
     )
 )
+
 
 # Server-Logik
 def server(input, output, session):
