@@ -1,7 +1,4 @@
 
-
-
-
 @font-face {
     font-family: 'Brandon';
     src: url('C:/Users/Hueck/OneDrive/Dokumente/GitHub/magpie_langchain/shiny_app/www/Brandon.ttf') format('truetype');
@@ -82,8 +79,8 @@ html, body {
 
 .send-button {
     font-size: 16px; /* Schriftgröße passend zum Textfeld */
-    background-color: #cbcbcb; /* Blaue Farbe für den Button */
-    color: white; /* Schriftfarbe weiß */
+    background-color: #b6ebae; /* Blaue Farbe für den Button */
+    color: #000000; /* Schriftfarbe weiß */
     border: 1px; /* Rahmen entfernen */
     border-radius: 55px; /* Abgerundete Ecken */
     cursor: pointer; /* Zeigt Hand-Icon bei Hover */
@@ -97,8 +94,8 @@ html, body {
 
 /* Hover-Zustand */
 .send-button:hover {
-    background-color: #969696; /* Neue Farbe bei Hover */
-    color: #fff; /* Optional: Schriftfarbe ändern, falls nötig */
+    background-color: #000000; /* Neue Farbe bei Hover */
+    color: #ffffff; /* Optional: Schriftfarbe ändern, falls nötig */
 }
 
 
@@ -106,7 +103,7 @@ html, body {
     height: 40px;
     width: 400px;
     padding: 10px;
-    font-size: 16px;
+    font-size: 16px; 
     border: 1px solid #ccc; /* Optional: eigene Rahmenfarbe */
 }
 

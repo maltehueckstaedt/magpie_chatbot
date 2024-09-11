@@ -49,7 +49,7 @@ Schreiben Sie uns eine Mail an hex@stifterverband.de und wir gehen ins Gespräch
 """
 
 # System Prompt für das Modell
-system_prompt = f"Du bist Shiny SV, ein Deutsch sprechender AI Assistent der Nutzern Fragen über folgenden Inhalt beantwortet: \n{text}\n Antworte kurz und immer auf Deutsch!."
+system_prompt = f"Du bist Settembrini, ein Deutsch sprechender AI Assistent der Nutzern Fragen über folgenden Inhalt beantwortet: \n{text}\n Antworte kurz und immer auf Deutsch und benutze immer Emojis!."
 
 # Shiny UI Layout
 app_ui = ui.page_fluid(
@@ -74,8 +74,10 @@ app_ui = ui.page_fluid(
 def server(input, output, session):
     
     # Initialisiere den Chatverlauf im Reactive-State
-    chat_state = reactive.Value([{"role": "system", "content": system_prompt}])
-    
+    chat_state = reactive.Value([
+        {"role": "system", "content": system_prompt},
+        {"role": "assistant", "content": "Hallo, mein Name ist Settembrini 😊. Ich bin der AI-Assistent des Datenportals des Stifterverbandes. Ich möchte helfen!"}
+    ])
     # Nachricht senden und Verlauf aktualisieren
     @reactive.Effect
     @reactive.event(input.senden)
@@ -109,7 +111,7 @@ def server(input, output, session):
             if message['role'] == 'user':
                 history_html += f"""
                 <div style='text-align: right; margin: 10px 0;'>
-                    <span style='background-color: #d1e7dd; padding: 10px; border-radius: 10px; display: inline-block; max-width: 80%;'>
+                    <span style='background-color: #b6ebae; padding: 10px; border-radius: 10px; display: inline-block; max-width: 80%;'>
                         {message['content']}
                     </span>
                 </div>
@@ -117,7 +119,7 @@ def server(input, output, session):
             elif message['role'] == 'assistant':
                 history_html += f"""
                 <div style='text-align: left; margin: 10px 0;'>
-                    <span style='background-color: #f8d7da; padding: 10px; border-radius: 10px; display: inline-block; max-width: 80%;'>
+                    <span style='background-color: #aedfeb; padding: 10px; border-radius: 10px; display: inline-block; max-width: 80%;'>
                         {message['content']}
                     </span>
                 </div>
