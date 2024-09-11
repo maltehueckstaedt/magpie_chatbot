@@ -33,6 +33,7 @@ system_prompt = f"Du bist ein Deutsch sprechender AI Assistent der Nutzern Frage
 
 # Shiny UI Layout
 app_ui = ui.page_fluid(
+    
     ui.include_css(Path(__file__).parent / "www" / "styles.css"),  # CSS-Datei einbinden
     ui.div(
         ui.output_ui("chat_output"),
@@ -41,7 +42,7 @@ app_ui = ui.page_fluid(
     ui.div(
         ui.div(
             ui.input_text("user_question", "", placeholder="Sende eine Nachricht..."),
-            ui.input_action_button("senden", ">"),
+            ui.input_action_button("senden", ">", class_="send-button"),
             class_="input-row"
         ),
         class_="input-container"

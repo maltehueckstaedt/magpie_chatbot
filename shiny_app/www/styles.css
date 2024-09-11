@@ -10,7 +10,8 @@ html, body {
 
 /* Container für den gesamten App-Bereich */
 .chat-container, .input-container {
-    max-width: 600px;  /* Begrenzung der maximalen Breite */
+    width: 500px;
+    max-width: 500px;  /* Begrenzung der maximalen Breite */
     width: 100%;       /* Volle Breite für kleinere Bildschirme */
     background-color: #ffffff;
     padding: 15px;
@@ -21,6 +22,7 @@ html, body {
 /* Chatverlauf anpassen */
 .chat-container {
     height: 80vh;
+    width: 500px;
     overflow-y: auto;
 }
 
@@ -36,27 +38,149 @@ html, body {
 }
 
 /* Styling für den User- und Assistant-Chatverlauf */
-.user-message {
-    text-align: right;
-    margin: 10px 0;
+
+.user-message span, .assistant-message span {
+    max-width: 600px; /* Feste Breite für Nachrichten */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
-.user-message span {
-    background-color: #d1e7dd;
-    padding: 10px;
-    border-radius: 10px;
-    display: inline-block;
-    max-width: 80%;
+.user-message, .assistant-message {
+    display: flex;
+    justify-content: flex-end; /* Für User-Nachrichten */
 }
 
 .assistant-message {
-    text-align: left;
-    margin: 10px 0;
+    justify-content: flex-start; /* Für Assistant-Nachrichten */
 }
 
-.assistant-message span {
-    background-color: #f8d7da;
-    padding: 10px;
-    border-radius: 10px;
-    display: inline-block;
-    max-width: 80%;
+.user-message span, .assistant-message span {
+    max-width: 600px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.send-button {
+    font-size: 16px; /* Schriftgröße passend zum Textfeld */
+    background-color: #007bff; /* Blaue Farbe für den Button */
+    color: white; /* Schriftfarbe weiß */
+    border: none; /* Rahmen entfernen */
+    border-radius: 55px; /* Abgerundete Ecken */
+    cursor: pointer; /* Zeigt Hand-Icon bei Hover */
+    height: 40px; /* Höhe des Buttons */
+    width: 30px;  /* Breite des Buttons */
+    
+    display: flex; /* Flexbox verwenden */
+    align-items: center; /* Vertikale Zentrierung */
+    justify-content: center; /* Horizontale Zentrierung */
+}
+
+/* Hover-Zustand */
+.send-button:hover {
+    background-color: #0056b3; /* Neue Farbe bei Hover */
+    color: #fff; /* Optional: Schriftfarbe ändern, falls nötig */
+}
+
+
+#user_question {
+    height: 40px; /* Höhe auf 50px erhöhen */
+    padding: 10px; /* Optional: Polsterung anpassen */
+    font-size: 16px; /* Optional: Schriftgröße anpassen */
+}
+
+body, .chat-container, .input-container, .input-row {
+    font-family: 'Calibri', sans-serif;
+}
+
+/**
+ * @license
+ * MyFonts Webfont Build ID 3281445, 2016-09-12T02:25:07-0400
+ * 
+ * The fonts listed in this notice are subject to the End User License
+ * Agreement(s) entered into by the website owner. All other parties are 
+ * explicitly restricted from using the Licensed Webfonts(s).
+ * 
+ * You may obtain a valid license at the URLs below.
+ * 
+ * Webfont: BaskervilleMT-Semibold by Monotype 
+ * URL: http://www.myfonts.com/fonts/mti/baskerville-mt/semi-bold/
+ * Copyright: Digitized data copyright Monotype Typography, Ltd 1991-1997. All rights reserved. Monotype Baskerville&#x00AE; is a trademark of Monotype Typography, Ltd which may be registered in certain jurisdictions.
+ * Licensed pageviews: 250,000
+ * 
+ * Webfont: BaskervilleMT-SemiboldItalic by Monotype 
+ * URL: http://www.myfonts.com/fonts/mti/baskerville-mt/semi-bold-italic/
+ * Copyright: Digitized data copyright Monotype Typography, Ltd 1991-1997. All rights reserved. Monotype Baskerville&#x00AE; is a trademark of Monotype Typography, Ltd which may be registered in certain jurisdictions.
+ * Licensed pageviews: 250,000
+ * 
+ * Webfont: BaskervilleMT-Bold by Monotype 
+ * URL: http://www.myfonts.com/fonts/mti/baskerville-mt/bold/
+ * Copyright: Digitized data copyright Monotype Typography, Ltd 1991-1995. All rights reserved. Monotype Baskerville&#x00AE; is a trademark of Monotype Typography, Ltd which may be registered in certain jurisdictions.
+ * Licensed pageviews: 250,000
+ * 
+ * Webfont: BaskervilleMT-Italic by Monotype 
+ * URL: http://www.myfonts.com/fonts/mti/baskerville-mt/italic/
+ * Copyright: Digitized data copyright Monotype Typography, Ltd 1991-1995. All rights reserved. Monotype Baskerville&#x00AE; is a trademark of Monotype Typography, Ltd which may be registered in certain jurisdictions.
+ * Licensed pageviews: 250,000
+ * 
+ * Webfont: BaskervilleMT by Monotype 
+ * URL: http://www.myfonts.com/fonts/mti/baskerville-mt/baskerville-mt/
+ * Copyright: Digitized data copyright Monotype Typography, Ltd 1991-1995. All rights reserved. Monotype Baskerville&#x00AE; is a trademark of Monotype Typography, Ltd which may be registered in certain jurisdictions.
+ * Licensed pageviews: 250,000
+ * 
+ * Webfont: BaskervilleMT-BoldItalic by Monotype 
+ * URL: http://www.myfonts.com/fonts/mti/baskerville-mt/bold-italic/
+ * Copyright: Digitized data copyright Monotype Typography, Ltd 1991-1995. All rights reserved. Monotype Baskerville&#x00AE; is a trademark of Monotype Typography, Ltd which may be registered in certain jurisdictions.
+ * Licensed pageviews: 250,000
+ * 
+ * Webfont: BrandonTextWeb-Bold by HVD Fonts
+ * URL: http://www.myfonts.com/fonts/hvdfonts/brandon-text/bold/
+ * Copyright: Copyright (c) 2015 by Hannes von Doehren. All rights reserved.
+ * Licensed pageviews: 1,000,000
+ * 
+ * Webfont: BrandonTextWeb-Italic by HVD Fonts
+ * URL: http://www.myfonts.com/fonts/hvdfonts/brandon-text/italic/
+ * Copyright: Copyright (c) 2015 by Hannes von Doehren. All rights reserved.
+ * Licensed pageviews: 1,000,000
+ * 
+ * Webfont: BrandonTextWeb-Regular by HVD Fonts
+ * URL: http://www.myfonts.com/fonts/hvdfonts/brandon-text/regular/
+ * Copyright: Copyright (c) 2015 by Hannes von Doehren. All rights reserved.
+ * Licensed pageviews: 1,000,000
+ * 
+ * 
+ * License: http://www.myfonts.com/viewlicense?type=web&buildid=3281445
+ * 
+ * © 2016 MyFonts Inc
+*/
+
+
+/* @import must be at top of file, otherwise CSS will not work */
+/* @import url("//hello.myfonts.net/count/321225");
+
+  
+@font-face {font-family: 'BaskervilleMT-Semibold';src: url('webfonts/321225_0_0.eot');src: url('webfonts/321225_0_0.eot?#iefix') format('embedded-opentype'),url('webfonts/321225_0_0.woff2') format('woff2'),url('webfonts/321225_0_0.woff') format('woff'),url('webfonts/321225_0_0.ttf') format('truetype');}
+ 
+  
+@font-face {font-family: 'BaskervilleMT-SemiboldItalic';src: url('webfonts/321225_1_0.eot');src: url('webfonts/321225_1_0.eot?#iefix') format('embedded-opentype'),url('webfonts/321225_1_0.woff2') format('woff2'),url('webfonts/321225_1_0.woff') format('woff'),url('webfonts/321225_1_0.ttf') format('truetype');}
+ 
+  
+@font-face {font-family: 'BaskervilleMT-Bold';src: url('webfonts/321225_2_0.eot');src: url('webfonts/321225_2_0.eot?#iefix') format('embedded-opentype'),url('webfonts/321225_2_0.woff2') format('woff2'),url('webfonts/321225_2_0.woff') format('woff'),url('webfonts/321225_2_0.ttf') format('truetype');}
+ 
+  
+@font-face {font-family: 'BaskervilleMT-Italic';src: url('webfonts/321225_3_0.eot');src: url('webfonts/321225_3_0.eot?#iefix') format('embedded-opentype'),url('webfonts/321225_3_0.woff2') format('woff2'),url('webfonts/321225_3_0.woff') format('woff'),url('webfonts/321225_3_0.ttf') format('truetype');}
+ 
+  
+@font-face {font-family: 'BaskervilleMT';src: url('webfonts/321225_4_0.eot');src: url('webfonts/321225_4_0.eot?#iefix') format('embedded-opentype'),url('webfonts/321225_4_0.woff2') format('woff2'),url('webfonts/321225_4_0.woff') format('woff'),url('webfonts/321225_4_0.ttf') format('truetype');}
+ 
+  
+@font-face {font-family: 'BaskervilleMT-BoldItalic';src: url('webfonts/321225_5_0.eot');src: url('webfonts/321225_5_0.eot?#iefix') format('embedded-opentype'),url('webfonts/321225_5_0.woff2') format('woff2'),url('webfonts/321225_5_0.woff') format('woff'),url('webfonts/321225_5_0.ttf') format('truetype');}
+ 
+  
+@font-face {font-family: 'BrandonTextWeb-Bold';src: url('webfonts/321225_6_0.eot');src: url('webfonts/321225_6_0.eot?#iefix') format('embedded-opentype'),url('webfonts/321225_6_0.woff2') format('woff2'),url('webfonts/321225_6_0.woff') format('woff'),url('webfonts/321225_6_0.ttf') format('truetype');}
+ 
+  
+@font-face {font-family: 'BrandonTextWeb-Italic';src: url('webfonts/321225_7_0.eot');src: url('webfonts/321225_7_0.eot?#iefix') format('embedded-opentype'),url('webfonts/321225_7_0.woff2') format('woff2'),url('webfonts/321225_7_0.woff') format('woff'),url('webfonts/321225_7_0.ttf') format('truetype');}
+ 
+  
+@font-face {font-family: 'BrandonTextWeb-Regular';src: url('webfonts/321225_8_0.eot');src: url('webfonts/321225_8_0.eot?#iefix') format('embedded-opentype'),url('webfonts/321225_8_0.woff2') format('woff2'),url('webfonts/321225_8_0.woff') format('woff'),url('webfonts/321225_8_0.ttf') format('truetype');}
+  */
