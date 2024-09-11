@@ -17,6 +17,13 @@ Im Maschinenbau wurden 2017 49.323 VZÄ im Bereich Forschung und Entwicklung ver
 2014 wurden in der Architektur und verwandten Bereichen 84.855 Tausend Euro für externe Forschungs- und Entwicklungsaufwendungen ausgegeben. 
 2016 wurden im Luft- und Raumfahrzeugbau 1.732.000 Tausend Euro für interne Forschung und Entwicklung aufgewendet. 
 In den Finanz- und Versicherungsdienstleistungen wurden 2014 318.000 Tausend Euro und 2010 in der Herstellung von Glas, Keramik sowie in der Verarbeitung von Steinen 285.334 Tausend Euro für interne Forschung und Entwicklung verzeichnet.
+
+Mit dem Higher Education Explorer (HEX) baut der Stifterverband eine neue Datenbank auf. In ihr werden erstmals Inhalte der Vorlesungsverzeichnisse von Hochschulen in Deutschland gesammelt.
+
+Vorlesungsverzeichnisse sind ein Spiegel der Lehre an Hochschulen: Inhalte der Lehrveranstaltungen, Formate, Sprachen und vieles mehr werden dort Semester für Semester festgehalten. Bislang wurde dieser Datenfundus jedoch nicht systematisch erfasst - nun soll er für die Hochschulforschung und Hochschulentwicklung nutzbar gemacht werden.
+
+Das Projekt wird unterstützt von der Heinz-Nixdorf-Stiftung
+Der Higher Education Explorer ist im September 2024 in einer Beta-Version an den Start gegangen. Die kontinuierlich wachsende Datenbank enthält bereits jetzt mehr als zwei Millionen Daten zu Lehrveranstaltungen sowie relevante Begleitdaten der Hochschulstatistik. Die Daten stammen von 22 deutschen Universitäten, darunter 15 der größten Universitäten. Damit bildet der HEX das Studienangebot für rund 23 Prozent der Studierenden ab.
 """
 
 # System Prompt für das Modell
@@ -26,14 +33,14 @@ system_prompt = f"Du bist ein Deutsch sprechender AI Assistent der Nutzern Frage
 app_ui = ui.page_fluid(
     # Ein Container für den Chat-Verlauf
     ui.div(
-        ui.output_ui("chat_output"),  # Ändere output_text zu output_ui
-        style="height: 80vh; overflow-y: auto; padding: 10px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 5px;"
+        ui.output_ui("chat_output"),
+        style="height: 80vh; overflow-y: auto; padding: 20px; background-color: #f0f0f0; border-radius: 10px;"
     ),
     # Eingabefeld und Senden-Button unten fixieren
     ui.div(
-        ui.input_text("user_question", "Deine Nachricht:", placeholder="Sende eine Nachricht an SV OLLAMA..."),
+        ui.input_text("user_question", "", placeholder="Sende eine Nachricht..."),
         ui.input_action_button("senden", "Senden"),
-        style="position: fixed; bottom: 10px; left: 10px; right: 10px; background-color: #fff; padding: 10px; border-top: 1px solid #ddd;"
+        style="position: fixed; bottom: 10px; left: 10px; right: 10px; background-color: #ffffff; padding: 15px; border-radius: 10px; box-shadow: 0px -2px 10px rgba(0,0,0,0.1);"
     )
 )
 
@@ -67,13 +74,25 @@ def server(input, output, session):
     @render.ui
     def chat_output():
         messages = chat_state.get()
-        history_text = ""
+        history_html = ""
         for message in messages:
             if message['role'] == 'user':
-                history_text += f"<b>Du</b>: {message['content']}<br><br>"
+                history_html += f"""
+                <div style='text-align: right; margin: 10px 0;'>
+                    <span style='background-color: #d1e7dd; padding: 10px; border-radius: 10px; display: inline-block; max-width: 80%;'>
+                        {message['content']}
+                    </span>
+                </div>
+                """
             elif message['role'] == 'assistant':
-                history_text += f"<b>Bot</b>: {message['content']}<br><br>"
-        return ui.HTML(history_text)  # Verwende ui.HTML, um HTML-Inhalte korrekt zu rendern
+                history_html += f"""
+                <div style='text-align: left; margin: 10px 0;'>
+                    <span style='background-color: #f8d7da; padding: 10px; border-radius: 10px; display: inline-block; max-width: 80%;'>
+                        {message['content']}
+                    </span>
+                </div>
+                """
+        return ui.HTML(history_html)
 
 # Shiny App-Objekt
 app = App(app_ui, server)
