@@ -1,3 +1,19 @@
+
+
+
+
+@font-face {
+    font-family: 'Brandon';
+    src: url('C:/Users/Hueck/OneDrive/Dokumente/GitHub/magpie_langchain/shiny_app/www/Brandon.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Globaler Stil für die gesamte App */
+body, input, button {
+    font-family: 'Brandon', sans-serif;
+}
+
 /* Vollbild-Container, um die App in der Mitte zu platzieren */
 html, body {
     height: 100%;
@@ -24,7 +40,11 @@ html, body {
     height: 80vh;
     width: 500px;
     overflow-y: auto;
+    background-size: cover;
+    background-position: center;
 }
+
+ 
 
 /* Eingabebereich unten */
 .input-container {
@@ -62,9 +82,9 @@ html, body {
 
 .send-button {
     font-size: 16px; /* Schriftgröße passend zum Textfeld */
-    background-color: #086873; /* Blaue Farbe für den Button */
+    background-color: #cbcbcb; /* Blaue Farbe für den Button */
     color: white; /* Schriftfarbe weiß */
-    border: none; /* Rahmen entfernen */
+    border: 1px; /* Rahmen entfernen */
     border-radius: 55px; /* Abgerundete Ecken */
     cursor: pointer; /* Zeigt Hand-Icon bei Hover */
     height: 40px; /* Höhe des Buttons */
@@ -77,7 +97,7 @@ html, body {
 
 /* Hover-Zustand */
 .send-button:hover {
-    background-color: #2ca9b7; /* Neue Farbe bei Hover */
+    background-color: #969696; /* Neue Farbe bei Hover */
     color: #fff; /* Optional: Schriftfarbe ändern, falls nötig */
 }
 
@@ -94,10 +114,6 @@ html, body {
     box-shadow: none; /* Entfernt das blaue Leuchten (Shadow) */
 }
 
- 
-body, .chat-container, .input-container, .input-row {
-    font-family: 'Calibri', sans-serif;
-}
 
 /**
  * @license
