@@ -1,42 +1,53 @@
 # %%
 import pandas as pd
-from sentence_transformers import SentenceTransformer
-import faiss
-import ollama
-import os 
 import re  # Regular Expressions importieren
+import ollama
+import os
 
+# Debug: Arbeitsverzeichnis prüfen
 print(os.getcwd())  # Zeigt den aktuellen Arbeitsverzeichnis-Pfad an
 os.chdir('c:/Users/Hueck/OneDrive/Dokumente/GitHub/magpie_langchain')
+
 # Lade die Datenbank
 data = pd.read_excel("data/mview_daten_beschr.xlsx")
+
 # Modell ID
 MODEL_ID = "llama3.1:8b-instruct-q4_0"
 ollama.pull(MODEL_ID)
 
 # Funktion zur Abfrage relevanter Daten aus der Excel-Datenbank
 def retrieve_relevant_data(data, query):
-    # Extrahiere das Jahr aus der Frage
     year_match = re.search(r'\b(19|20)\d{2}\b', query)
     year = year_match.group() if year_match else None
 
-    # Suche nach relevanten Daten basierend auf Variable und Jahr
     relevant_data = []
     for _, row in data.iterrows():
-        if (year and year in str(row['zeit_start'])) and ('intern' in query.lower() or 'fué' in query.lower()):
+        if (
+            year and year in str(row['zeit_start']) and year in str(row['zeit_ende']) and
+            any(term in str(row['variable']).lower() for term in ['fu&e', 'ausgaben', 'aufwendungen'])
+        ):
             relevant_data.append(
                 f"Von {row['zeit_start']} bis {row['zeit_ende']}: {row['variable']} betrug {row['wert']} {row['wert_einheit']} in {row['reichweite']}."
             )
+
+    # Debug-Ausgabe: Zeige die gefundenen Daten an
+    print("Gefundene relevante Daten:", relevant_data)
+
+    # Begrenze die Anzahl der Ergebnisse auf maximal 3
+    if len(relevant_data) > 3:
+        relevant_data = relevant_data[:3]
+        print("Zu viele Daten, auf 3 Einträge begrenzt.")
+
     return " ".join(relevant_data) if relevant_data else "Keine relevanten Daten gefunden."
 
 # System Prompt für das Modell
 def create_system_prompt(context):
     return f"""
-    Du bist ein KI-Assistent, der Fragen ausschließlich zu den folgenden Daten beantwortet:
+    Du bist ein KI-Assistent. Nutze ausschließlich die folgenden Daten, um Fragen zu beantworten:
     {context}
-    Du darfst keine Informationen aus externem Wissen verwenden. Ignoriere alle anderen Datenquellen.
-    Wenn die benötigte Information nicht in den Daten enthalten ist, antworte: 'Diese Information ist in den bereitgestellten Daten nicht verfügbar.' 
-    Antworte kurz und präzise auf Deutsch. Verwende Emojis für Benutzerfreundlichkeit.
+    Antworte präzise auf Basis dieser Daten. Ignoriere alles andere Wissen und liefere keine allgemeinen Informationen.
+    Falls die benötigte Information nicht in den Daten enthalten ist, antworte: 'Diese Information ist nicht verfügbar.'
+    Antworte kurz und auf Deutsch. Verwende Emojis!
     """
 
 # Funktion zur Beantwortung der Frage mit Ollama
@@ -61,13 +72,21 @@ if __name__ == "__main__":
         if user_question.lower() == "exit":
             print("Bis bald! 👋")
             break
-        
+
         # Abrufen relevanter Daten
         relevant_context = retrieve_relevant_data(data, user_question)
-        
-        # Beantwortung der Frage mit Ollama
+
+        # Debugging: Kontext und Daten prüfen
         if relevant_context == "Keine relevanten Daten gefunden.":
             print("Antwort: Diese Information ist in den bereitgestellten Daten nicht verfügbar. ❌")
+            print("Debugging: Keine relevanten Daten gefunden.")
+            print("Datenstruktur prüfen:")
+            print(data.head())  # Zeige die ersten Zeilen der Datenbank
+            print(data.columns)  # Zeige alle Spaltennamen
         else:
+            print("Debugging: Kontext für Modell:")
+            print(relevant_context)
+
+            # Beantwortung der Frage mit Ollama
             answer = ask_question_with_ollama(user_question, relevant_context)
             print(f"Antwort: {answer}")
