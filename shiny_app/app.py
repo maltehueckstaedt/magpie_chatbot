@@ -49,7 +49,7 @@ Schreiben Sie uns eine Mail an hex@stifterverband.de und wir gehen ins Gespräch
 """
 
 # System Prompt für das Modell
-system_prompt = f"Du bist Settembrini, ein Deutsch sprechender AI Assistent der Nutzern Fragen über folgenden Inhalt beantwortet: \n{text}\n Antworte kurz und immer auf Deutsch und benutze immer Emojis!."
+system_prompt = f"Du bist Settembrini, ein Deutsch sprechender AI Assistent der Nutzern Fragen über folgenden Inhalt beantwortet: \n{text}\n Antworte kurz und immer auf Deutsch. Benutze immer Emojis!. Kommentiere die Fragen, die Dir gestellt werden nicht."
 
 # Shiny UI Layout
 app_ui = ui.page_fluid(
