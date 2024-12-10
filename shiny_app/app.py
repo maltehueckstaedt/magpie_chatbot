@@ -9,47 +9,29 @@ ollama.pull(MODEL_ID)
 
 # Der feste Text, auf den sich die Fragen beziehen
 text = """
-2011 wurden in Deutschland 1.296.349 Euro für Forschung und Entwicklung in Architektur- und Ingenieurbüros sowie für technische Untersuchungen ausgegeben. 
-1987 gab es im gesamten Wirtschaftssektor 295.332 Vollzeitäquivalente (VZÄ) im Bereich Forschung und Entwicklung. 
-2016 wurden im Sektor der freiberuflichen, wissenschaftlichen und technischen Dienstleistungen 47.551 VZÄ gezählt. 
-Im Bergbau und in der Steingewinnung wurden im selben Jahr 21.318 Tausend Euro für interne Forschungs- und Entwicklungsarbeiten ausgegeben. 
-Im Maschinenbau wurden 2017 49.323 VZÄ im Bereich Forschung und Entwicklung verzeichnet. 
-2004 betrugen die internen Forschungs- und Entwicklungsausgaben im gesamten Wirtschaftssektor 38.363.000 Tausend Euro.
+Wie muss sich die Hochschulbildung in Deutschland entwickeln, um Nachwuchskräfte mit den für die Zukunft nötigen Kompetenzen zu versorgen? Wie viel investieren deutsche Unternehmen in die eigene Forschung und reicht das, um den Innovationsstandort Deutschland zu sichern? Diese und weitere Fragen analysiert der Stifterverband regelmäßig in Studien und Erhebungen. Dazu nutzt er Daten und wissenschaftliche Ergebnisse, die er selbst erhebt, sowie Untersuchungen, die er in Auftrag gibt oder von Dritten bereitgestellt werden. Sie zeigen klar auf, wo Veränderungen im Bildungs-, Wissenschafts- und Innovationssystem nötig sind.
 
-2014 wurden in der Architektur und verwandten Bereichen 84.855 Tausend Euro für externe Forschungs- und Entwicklungsaufwendungen ausgegeben. 
-2016 wurden im Luft- und Raumfahrzeugbau 1.732.000 Tausend Euro für interne Forschung und Entwicklung aufgewendet. 
-In den Finanz- und Versicherungsdienstleistungen wurden 2014 318.000 Tausend Euro und 2010 in der Herstellung von Glas, Keramik sowie in der Verarbeitung von Steinen 285.334 Tausend Euro für interne Forschung und Entwicklung verzeichnet.
+Auf diese Weise identifiziert der Stifterverband Stärken und Schwächen, macht Handlungsbedarfe sichtbar und verdeutlicht, welche Themen verstärkt in den Fokus politischer Debatten rücken müssen. Das Ziel: evidenzbasierte Entscheidungen in Politik und Wissenschaft zu ermöglichen - mit konkreten Handlungsempfehlungen und Zukunftsszenarien.
 
-Was ist HEX?
-Die Abkürzung HEX steht für Higher Education Explorer. HEX ist eine Datenbank, in der die Daten aus Vorlesungsverzeichnissen von Hochschulen vereinheitlicht und zusammengefasst werden. Anhand dieses Datenpools lassen sich vielfältige Recherchen und Analysen durchführen und Entwicklungen rund um die Hochschullehre entdecken und aufzeigen. HEX wurde bisher als Beta-Version veröffentlicht. HEX ist ein Projekt des Stifterverbandes und wird unterstützt von der Heinz Nixdorf Stiftung.
+Das bietet der Daten-Navigator:
 
-Welches Problem löst HEX?
-Der Higher Education Explorer schafft Transparenz über die Inhalte und Struktur der deutsche Hochschullehre sowie relevante Trends und Veränderungen, indem er große Datenmengen bis auf die Ebene des einzelnen Hochschulkurses durchsucht und auswertet. Bisher war dies nur auf Studiengangsebene möglich. HEX ersetzt aufwändige Auszählungen einzelner Vorlesungsverzeichnisse.
+Daten suchen und analysieren
+Vielfältige Filter- und Suchfunktionen erlauben es, genau die Daten zu finden, die für Fragen und Projekte relevant sind. Alle verfügbaren Daten des Stifterverbandes können hier erkundet und analysiert werden.
+ 
+Monitoring
+Der Daten-Navigator zeigt auf, wie sich ausgewählte Indikatoren in den beiden Handlungsfeldern des Stifterverbandes entwickeln.
+ 
+Datenanalysen aus dem Stifterverband
+Kuratierte Insights zu verschiedenen Themen aus den Bereichen "Bildung & Kompetenzen" sowie "Kollaborative Forschung & Innovation". In einzelnen (Blog-)Artikeln finden sich tiefgehende Analysen und anschauliche Darstellungen sowie Einordnungen und Handlungsempfehlungen.
+ 
+Studienprojekte aus dem Stifterverband
+Auf interaktiven Datenseiten lassen sich Analysen mit den Datensätzen aus Untersuchungen, die der Stifterverband durchgeführt hat, in Echtzeit und auf verschiedenen Ebenen durchführen.
 
-Ist HEX ein Unikat oder gibt es vergleichbare Datenbasen und Werkzeuge?
-Für die Analyse von Veranstaltungen gibt es unseres Wissens kein vergleichbares Projekt. Zur Vereinfachung von Modulanrechnungen existiert das Projekt PIM und für Literaturverwendung Open Syllabus aus den USA.
 
-Für wen ist HEX wichtig?
-HEX ist wichtig für die Beteiligten der Hochschulleitung, Hochschulentwicklung, und Hochschulforschung und die an diesen Themen interessierte Fachöffentlichkeit. Die Universitäten in der Datenbank erhalten individuelle Auswertungen, um schnell einen umfassenden Blick auf ihr Lehrangebot zu bekommen und datenbasierte Entscheidungen für Lehre und Studium treffen zu können. Mit dem HEX haben sie die Möglichkeit, die eigene Strategie zu prüfen, Standortvorteile zu erkennen und hervorzuheben oder frühzeitig Entwicklungen in der Lehre anzustoßen. Gleichzeitig werden Analysen über die allgemeine Entwicklung des Lehrangebots in Deutschland erstellt und für die Allgemeinheit zur Verfügung gestellt.  
-
-Auf welche Daten und welche Datenmengen greift HEX aktuell zu?
-Auf welche kann er perspektivisch zugreifen? HEX ist eine kontinuierlich wachsende Datenbank, die momentan mehr als zwei Millionen Daten zu Lehrveranstaltungen sowie relevante Begleitdaten der Hochschulstatistik enthält. Die Daten stammen von 22 deutschen Universitäten, darunter 15 der größten Universitäten. Damit bildet der HEX das Studienangebot für rund 23 Prozent der Studierenden ab. Ob sich das Konzept auch auf HAWs/Fachhochschulen, private Hochschulen und/oder internationale Hochschulen übertragen lässt, wird in einer späteren Phase geprüft.
-
-Welche Themen bzw. Fragen kann HEX untersuchen und in welcher Form präsentiert er die Ergebnisse?
-HEX bietet eine Vielzahl von Analysemöglichkeiten, in denen die Grunddaten und Kennzahlen zu Kursen, Lehrformaten, Lehrsprachen, Studierende pro Kurs, wissenschaftliches Personal pro Kurs und Professorin bzw. Professor bis auf die Ebene der Studienbereiche miteinander verknüpft werden können. Darüber hinaus entstehen im HEX-Forschungsprojekt inhaltliche Analysen zu Trends in Lehrthemen, Lehrprofile der Hochschule oder Future Skills. Die methodische Vielfalt reicht dabei von Stichwortauszählungen bis zum maschinellen Lernen.
-
-Wie lange würde eine HEX-Analyse dauern?
-Einfache Veranstaltungsrecherchen lassen sich schnell umsetzen. Umfassende wissenschaftliche Analysen, bei denen auch andere Daten und Literatur einbezogen, die Limitationen so weit wie möglich eingrenzt und die Ergebnisse eingeordnet werden, sind aufwändiger – die genaue Dauer ist dabei individuell abzuschätzen.  
-
-Wer kann auf HEX zugreifen?
-Der Stifterverband hat bereits mit Partnerstiftungen erste Analysen erarbeitet und wird sukzessive weitere Studienergebnisse veröffentlichen. Wir möchten gerne mit weiteren Partnern aus der Hochschul- und Wissenschaftsforschung zusammenarbeiten. Kommen Sie mit Studienideen gerne auf uns zu!
-
-An wen kann ich mich wenden?
-Schreiben Sie uns eine Mail an hex@stifterverband.de und wir gehen ins Gespräch. 
 """
 
 # System Prompt für das Modell
-system_prompt = f"Du bist Settembrini, ein Deutsch sprechender AI Assistent der Nutzern Fragen über folgenden Inhalt beantwortet: \n{text}\n Antworte kurz und immer auf Deutsch. Benutze immer Emojis!. Kommentiere die Fragen, die Dir gestellt werden nicht."
+system_prompt = f"Du bist der Chatbot des Daten-Navigators des Stifterverbandes, ein Deutsch sprechender AI Assistent der Nutzern Fragen über folgenden Inhalt beantwortet: \n{text}\n Antworte kurz und immer auf Deutsch. Kommentiere die Fragen, die Dir gestellt werden nicht."
 
 # Shiny UI Layout
 app_ui = ui.page_fluid(
@@ -76,7 +58,7 @@ def server(input, output, session):
     # Initialisiere den Chatverlauf im Reactive-State
     chat_state = reactive.Value([
         {"role": "system", "content": system_prompt},
-        {"role": "assistant", "content": "Hallo, mein Name ist Settembrini 😊. Ich bin der AI-Assistent des Datenportals des Stifterverbandes. Ich möchte helfen!"}
+        {"role": "assistant", "content": "Hallo 😊, Ich bin der AI-Assistent des Daten-Navigators des Stifterverbandes. Wie kann ich Ihnen behilflich sein?"}
     ])
     # Nachricht senden und Verlauf aktualisieren
     @reactive.Effect
