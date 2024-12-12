@@ -1,11 +1,3 @@
 {
-    "sqltools.connections": [
-        {
-            "name": "DuckDB",
-            "accessMode": "Read/Write",
-            "previewLimit": 50,
-            "driver": "DuckDB",
-            "databaseFilePath": "C:\\Users\\Hueck\\OneDrive\\Dokumente\\GitHub\\magpie_langchain\\magpie.db"
-        }
-    ]
+    "sqltools.connections": []
 }
