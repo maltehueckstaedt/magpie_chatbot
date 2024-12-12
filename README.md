@@ -1,4 +1,4 @@
-# *Sparklehorse* <img src="img/sparklehorse_logo.svg" align="right" height="238" alt="ggplot2 website" />
+# *Sparklehorse* <img src="img/sparklehorse_logo.svg" align="right" height="218" alt="ggplot2 website" />
 
 ![LangChain](https://img.shields.io/badge/Powered%20by-LangChain-blue)
 ![Ollama](https://img.shields.io/badge/Ollama-LLM%20Integration-orange)
