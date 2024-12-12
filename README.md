@@ -98,7 +98,7 @@ In einem zweiten Schritt wurde versucht mittels Metas [Llama](https://ollama.com
    Die vom LLM generierte Antwort wird dem Benutzer präsentiert.
 
 
- <img src="img/simple_prompt_model.png" height="250" />
+ <img src="img/simple_prompt_model.png" height="290" />
 
  ##### Bewertung
 
