@@ -30,7 +30,7 @@
 5. **Ausgabe**:
    Die generierte Antwort wird dem Benutzer angezeigt.
 
-<img src="img/curent_model.png" height="350" />
+<img src="img/curent_model.png" height="250" />
 
 #### Bewertung
 
@@ -68,7 +68,7 @@ In einem ersten Schritt wurde versucht ein [Question Answering](https://huggingf
    Die generierte Antwort wird dem Benutzer präsentiert.
 
 
-<img src="img/qa_model.png" height="700" />
+<img src="img/qa_model.png" height="500" />
 
 ##### Bewertung
 
@@ -98,7 +98,7 @@ In einem zweiten Schritt wurde versucht mittels Metas [Llama](https://ollama.com
    Die vom LLM generierte Antwort wird dem Benutzer präsentiert.
 
 
- <img src="img/simple_prompt_model.png" height="350" />
+ <img src="img/simple_prompt_model.png" height="310" />
 
  ##### Bewertung
 
