@@ -1,3 +1,10 @@
 {
-    "sqltools.connections": []
+    "sqltools.connections": [],
+    "cSpell.words": [
+        "duckdb",
+        "langchain",
+        "ollama",
+        "Ollama",
+        "Sparklehorse"
+    ]
 }

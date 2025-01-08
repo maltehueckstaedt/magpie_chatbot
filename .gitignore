@@ -162,3 +162,5 @@ cython_debug/
 #.idea/
 *.csv
 data/~$s_o_data.xlsx
+
+.vscode/settings.json
