@@ -1,5 +1,4 @@
-# Abfrage der Drittmittel der Humboldt-Universität zu Berlin für 2008
-
+# Beispielabfrage Sparklehorse:
 Der Bot führt eine Abfrage in einer SQL-Datenbank durch, um die Drittmittel der Humboldt-Universität zu Berlin für das Jahr 2008 zu ermitteln. Das ist, was passiert:
 
 ## 1. Empfang der Benutzeranfrage
