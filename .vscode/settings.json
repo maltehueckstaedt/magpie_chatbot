@@ -5,6 +5,9 @@
         "langchain",
         "ollama",
         "Ollama",
-        "Sparklehorse"
+        "openai",
+        "Sparklehorse",
+        "toolkits",
+        "vectorstores"
     ]
 }
