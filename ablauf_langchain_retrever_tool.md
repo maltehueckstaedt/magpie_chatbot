@@ -1,9 +1,9 @@
-# Abfrage der Drittmittel der Humboldt-Universität zu Berlin für 2008
+# Beispielabfrage Sparklehorse:
 
-Der Bot führt eine Abfrage in einer SQL-Datenbank durch, um die Drittmittel der Humboldt-Universität zu Berlin für das Jahr 2008 zu ermitteln. Das ist, was passiert:
+Exemplarisches Beispiel einer Abfrage:
 
 ## 1. Empfang der Benutzeranfrage
-Der Benutzer fragt: „Wie hoch waren 2008 die Drittmittel der HU Berlin?“
+User fragt: „Wie hoch waren 2008 die Drittmittel der HU Berlin?“
 
 ## 2. Abruf der Tabellennamen
 Der Bot ruft eine Liste aller Tabellen in der Datenbank ab, um herauszufinden, wo relevante Daten gespeichert sein könnten.
@@ -20,7 +20,7 @@ WHERE Jahr = 2008 AND Hochschule = 'HU Berlin'
 ```
 
 ## 5. Überprüfung und Korrektur des Hochschulnamens
-Der Bot erkennt, dass „HU Berlin“ eine Abkürzung ist und sucht nach dem vollständigen Namen.  
+Der Bot erkennt, dass „HU Berlin“ eine Abkürzung ist und sucht nach dem vollständigen/korrekten Namen mit Hilfe von Embeddings.  
 Er findet: „Humboldt-Universität zu Berlin“, aktualisiert die Abfrage entsprechend und führt sie erneut aus.
 
 ## 6. Ausführung der SQL-Abfrage
