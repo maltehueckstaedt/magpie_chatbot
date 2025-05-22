@@ -16,4 +16,3 @@
 *Sparklehorse* kann derzeit erste Fragen zu den Daten des Daten-Navigators des Stifterverbandes beantworten. *Sparklehorse* arbeitet dabei derzeit wie folgt:
 
  <img src="img/curent_model_v1.png" height="710" />
-
