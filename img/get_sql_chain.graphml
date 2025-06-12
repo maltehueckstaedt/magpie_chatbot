@@ -303,12 +303,12 @@
         </y:GenericNode>
       </data>
     </node>
-    <node id="n10" yfiles.foldertype="folder">
+    <node id="n10" yfiles.foldertype="group">
       <data key="d4" xml:space="preserve"/>
       <data key="d5"/>
       <data key="d6">
         <y:ProxyAutoBoundsNode>
-          <y:Realizers active="1">
+          <y:Realizers active="0">
             <y:GroupNode>
               <y:Geometry height="106.41125940393519" width="349.7376543209876" x="454.8297084078858" y="-97.36872964763032"/>
               <y:Fill color="#F5F5F5" transparent="false"/>
@@ -469,9 +469,9 @@ LIMIT 5</y:NodeLabel>
       <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="-69.85789601794147" ty="1.5871904080935195">
+          <y:Path sx="0.0" sy="0.0" tx="-174.88975393036264" ty="8.738037109375007">
             <y:Point x="417.40170476030835" y="-86.09871667566702"/>
-            <y:Point x="417.40170476030835" y="-86.11718738768494"/>
+            <y:Point x="417.40170476030835" y="-35.425062836287715"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="white_diamond"/>
