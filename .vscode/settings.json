@@ -1,3 +1,14 @@
 {
-    "sqltools.connections": []
+    "sqltools.connections": [],
+    "cSpell.words": [
+        "duckdb",
+        "langchain",
+        "Merkmalsausprägungen",
+        "ollama",
+        "Ollama",
+        "openai",
+        "Sparklehorse",
+        "toolkits",
+        "vectorstores"
+    ]
 }

@@ -1,110 +1,113 @@
-# *Sparklehorse* <img src="img/sparklehorse_logo.svg" align="right" height="218" alt="ggplot2 website" />
+# *Sparklehorse* <img src="img/sparklehorse_logo.svg" align="right" height="218" alt="Sparklehorse Logo" />
 
 ![LangChain](https://img.shields.io/badge/Powered%20by-LangChain-blue)
+![Powered by OpenAI](https://img.shields.io/badge/Powered%20by-OpenAI-%23412991?logo=openai&logoColor=white)
 ![Ollama](https://img.shields.io/badge/Ollama-LLM%20Integration-orange)
 ![Python](https://img.shields.io/badge/Developed%20with-Python-yellow)
 ![DuckDB](https://img.shields.io/badge/Fast%20Queries-DuckDB-green)
 
-## Was ist das *Sparklehorse*?
+## Was ist *Sparklehorse*?
 
-*Sparklehorse* ist ein in Entwicklung befindlicher Chatbot. Um den Chatbot Lokal hosten zu können, wird die LLM-Distribution [Ollama](https://ollama.com/) verwendet. Der Chatbot verwendet weiterhin Metas [Llama](https://ollama.com/library/llama3.1:8b) in der kleinsten Ausführung, d.h. mit acht Bilionen Paramentern (`llama3.1:8b`).
+*Sparklehorse* ist ein SQL-Chatbot für die Datenbank Magpie. Er ermöglicht es, natürliche Sprache in SQL-Abfragen zu übersetzen, um Daten aus einer auf der Magpie basierenden mview abzufragen. 
 
-## Entwicklung
+Zum lokalen Hosting soll künftig die LLM-Distribution [Ollama](https://ollama.com/) genutzt werden. Der Chatbot verwendet aktuell jedoch aus Leistungsgründen die OpenAI-API mit dem Modell `gpt-4o` für die Sprachverarbeitung und `text-embedding-3-large` für semantische Such-Embeddings.
 
-### Aktuelles Modell: Retrieval-Augmented Generation (RAG) mit Langchain, DuckDB
+## Architektur & Funktionsweise
 
-*Sparklehorse* kann derzeit erste Fragen zu den Daten des Daten-Navigators des Stifterverbandes beantworten. *Sparklehorse* arbeitet dabei derzeit wie folgt:
+*Sparklehorse* arbeitet als SQL-Agent, der Nutzerfragen analysiert, relevante Variablen und Reichweiten identifiziert, die entsprechenden SQL-Abfragen generiert und ausführt. Die Antworten werden in natürlicher Sprache ausgegeben.
 
-1. **Benutzereingabe**:
-   Der Nutzer gibt eine Frage oder eine Eingabe ein.
+Das System nutzt:
 
-2. **Verarbeitung durch das LLM (Llama 3.1)**:
-   Das Large Language Model (LLM) analysiert die Eingabe und entscheidet, ob Informationen aus einer externen Datenbank benötigt werden (ToDo).
+- **LangChain** für Agenten und Tool-Management
+- **DuckDB** als schnelle lokale Datenbank
+- **Vektor-Suchmethoden** mit OpenAI-Embeddings zur semantischen Variablensuche
+- **Maßgeschneiderte Tools** (`variable_beschr` und `get_reichweite_beschr_list`) für kontextsensitive Auswahl von Variablen und Reichweiten
 
-3. **Abfrage an MAGPIE**:
-   Falls Daten erforderlich sind, stellt das LLM eine SQL-Abfrage an die MAGPIE-Datenbank und erhält die entsprechenden Informationen zurück.
+Sparklehorse geht folgendermaßen vor: 
 
-4. **Antwortgenerierung**:
-   Das LLM kombiniert die erhaltenen Informationen aus MAGPIE mit seinem internen Wissen und erstellt eine passende Antwort.
+### Ablauf einer Nutzeranfrage in *Sparklehorse*
 
-5. **Ausgabe**:
-   Die generierte Antwort wird dem Benutzer angezeigt.
+Das Sparklehorse geht folgendermaßen vor (vgl. Abbildung 1): 
 
-<img src="img/curent_model.png" height="250" />
+1. **Nutzer\*innenfrage**  
+   Die Nutzer\*innen stellen eine Frage, z.B.: 
+   _„Wie hoch waren die externen FuE-Aufwendungen 2020 in Deutschland im Wirtschaftssektor?“_
 
-#### Bewertung
+2. **Variable-Beschreibung ermitteln**  
+   Das System nutzt einen semantischen Retriever, um aus der Frage passende Variablenbeschreibungen (hier: `Externe FuE-Aufwendungen`) zu finden. Anschließend wählt ein `gpt-4o` die inhaltlich passendste Variable aus.
 
-- Komplexere Anfragen werden nicht in korrekte SQL-Abfragen überführt
-- Jede Anfrage wird in eine SQL-Anfrage überführt
-- Keine Skalierungs-Erfahrungen
+3. **Reichweite bestimmen**  
+      Ein weiteres Tool bestimmt mithilfe von Few-Shot-Prompting und `gpt-4o` die passende Reichweite, hier `Wirtschaftssektor | Deutschland | Forschungsintensive Wirtschaftszweige`. Das Few-Shot-Prompting adressiert das Problem, dass in einigen Fällen die richtige Reichweite z.B. `Deutschland` ist, auch wenn andere Reichweiten semantisch passender erscheinen.
 
-#### Files
+4. **SQL-Abfrage generieren und ausführen**  
+   Basierend auf Variable, Reichweite und Zeitangabe wird eine validierte SQL-Abfrage auf der DuckDB-Mview erzeugt und ausgeführt, um die relevanten Daten abzurufen.
 
-Die Konstruktion des Bots befindet sich derzeit in einen Jupyter-Notebook hier: `py\jupyther_notebooks\rag_pipleline_tutorial.ipynb`.
-
-
-### Historie der Entwicklung
-
-#### 1. Modell: QA-Model
-
-In einem ersten Schritt wurde versucht ein [Question Answering](https://huggingface.co/tasks/question-answering) Modell per fine tuning von [roberta-base-squad2](https://huggingface.co/deepset/roberta-base-squad2) zu konstruieren. Der Vorgang war wie folgt:
-
-1. **Benutzereingabe**:
-   Der Nutzer stellt eine Frage oder macht eine Eingabe.
-
-2. **Erstellung von Embeddings**:
-   Die Benutzereingabe wird in Embeddings umgewandelt, die semantische Informationen enthalten.
-
-3. **Abfrage an CHROMA**:
-   Es wird eine Abfrage an die CHROMA-Datenbank gestellt, die bereits vorbereitete Embeddings aus der Magpie enthält.
-
-4. **Kombination der Ergebnisse**:
-   Die Embeddings aus der Benutzereingabe und den Ergebnissen von CHROMA werden kombiniert, um eine präzise Antwort zu ermöglichen.
-
-5. **Antwortgenerierung durch QA-Modell**:
-   Das QA-Modell (*roberta-base-squad2*) analysiert die Daten und erstellt eine Antwort auf die Benutzereingabe.
-
-6. **Ausgabe**:
-   Die generierte Antwort wird dem Benutzer präsentiert.
+5. **Antwort generieren**  
+   Das Ergebnis der SQL-Abfrage wird in natürliche Sprache übersetzt und dem Nutzer als Antwort zurückgegeben.
 
 
-<img src="img/qa_model.png" height="500" />
+![Aktuelles Modell](img/curent_model_v_0.0.1.png)
 
-##### Bewertung
+**Abb. 1:** Sparklehorse (v.0.0.1)
 
-- QA-Modelle antworten im allgemeinen nicht eloquent. Sie sind nicht für Textgeneration erzeugt worden, sondern für das herausfinden und einfache Nennen abgefragter Informationen. Für das Datenportal wird aber ein Bot gewünscht, der menschenähnlich kommuniziert.
-- Das trainierte QA-Modell antwortet falsch. Es bräuchte für das Finetuning vermutlich mehr Trainingsdaten.
+## Installation & Vorbereitung
 
-##### Files
+1. Klone das Repository und wechsle ins Arbeitsverzeichnis:
+    ```bash
+    git clone <repo-url>
+    cd magpie_chatbot
+    ```
 
-Die Konstruktion des QA-Modells befindet sich derzeit in einem `py`-File hier: `py\py_files\qa-model_eike.py`.
+2. Erstelle und aktiviere die Conda-Umgebung:
+    ```bash
+    conda env create -f chatbot_magpie.yml
+    conda activate chatbot_magpie
+    ```
 
-#### 2. Modell: LLM mit einfachen Prompt-Engineering
+3. Lege deine Umgebungsvariablen an, z.B. in einer `.env`-Datei:
+    ```
+    OPENAI_API_KEY=dein_api_key
+    ```
 
-In einem zweiten Schritt wurde versucht mittels Metas [Llama](https://ollama.com/library/llama3.1:8b) und Prompt-Engineering ein adäquaten Bot zu erzeugen. Der Vorgang war dabei wie folgt:
+4. Starte den Chatbot lokal:
+    ```bash
+    python main.py
+    ```
 
-1. **Benutzereingabe**:
-   Der Benutzer stellt eine Frage oder gibt eine Eingabe in natürlicher Sprache ein.
+## Nutzung
 
-2. **Prompt Engineering**:
-   Die Eingabe wird mit zusätzlichen Informationen angereichert, darunter:
-   - **Instruction**: Anweisungen, wie die Anfrage bearbeitet werden soll (Identität des Bots, Zugehörigkeit, Grenzen der Auskunftspflicht usw.)
-   - **Context**: Kontext, der für die Anfrage relevant ist (Informationen zum Datennavigator).
+*Sparklehorse* versteht Fragen wie:
 
-3. **Verarbeitung durch LLM (Llama 3.1)**:
-   Das Large Language Model analysiert die angereicherte Eingabe und erstellt eine Antwort basierend auf den Anweisungen und dem Kontext.
+- „Wie hoch waren die externen FuE-Aufwendungen 2020 in Deutschland?“
+- „Wie viele Absolventen gab es im Jahr 2021?“
+- „Was ist die Anzahl dauerhaft eingestellter Lehrkräfte?“
 
-4. **Antwortausgabe**:
-   Die vom LLM generierte Antwort wird dem Benutzer präsentiert.
+Die Antworten basieren auf dynamisch generierten SQL-Abfragen auf der Magpie-Datenbank.
 
+## Tools & Komponenten
 
- <img src="img/simple_prompt_model.png" height="310" />
+### 1. `variable_beschr`
 
- ##### Bewertung
+Tool zur semantischen Identifikation der korrekten Variablen in der Datenbank aus der Nutzerfrage. Nutzt Vektor-Suche und LLM, um die beste Übereinstimmung zu finden.
 
-- Modell antwortet eloquent
-- Modell kann nicht mit komplexen Kontexten umgehen. Die Folge: Halluzination
+### 2. `get_reichweite_beschr_list`
 
-##### Files
+Tool zur Ermittlung der passenden Reichweite (Region, Organisation etc.) basierend auf der Nutzerfrage und den gültigen Einträgen in der Datenbank. Nutzt Few-Shot-Prompting und semantische Suche.
 
-Das Modell findet sich in einer ShinyApp unter `shiny_app/app.py`.
+### 3. ReAct-Agent
+
+Ein speziell konfigurierte SQL-Agent, der SQL-Abfragen strikt nach vorgegebenen Regeln erstellt und nur validierte Variablen und Reichweiten verwendet.
+
+## Beispiel
+
+```python
+question = "Wie hoch waren die externe fue-aufwendungen, im Jahr 2020, in Deutschland, im wirtschaftssektor, bei forschungsintensive wirtschaftszweige Forschung?"
+stream_agent_with_check(question)
+```
+
+## Weiterentwicklung & ToDos
+
+- Update der mview in DuckDB
+- `py`-file um den Chatbot jenseits des Jupyternotebooks zu starten
+- Verbesserte Fehlerbehandlung und Nutzer-Rückfragen
+- UI-Integration für einfachere Bedienung im Datennavigator des SV
