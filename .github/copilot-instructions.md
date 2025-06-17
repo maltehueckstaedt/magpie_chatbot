@@ -1,11 +1,11 @@
 # Copilot Custom Instructions
 
-Bitte beantworte alle Fragen ausschließlich auf Deutsch.
+Please answer all questions exclusively in German.
 
-Verwende bei Codebeispielen deutsche Kommentare und deutsche Variablennamen, sofern nicht anders angegeben.
+Use German comments and variable names in code examples, unless otherwise specified.
 
-Halte Antworten kurz, sachlich und ohne unnötige Erklärungen. Nutze klare und verständliche Formulierungen.
+Keep answers brief, factual, and without unnecessary explanations. Use clear and understandable phrasing.
 
-Bei Inline-Codevervollständigungen bitte ausschließlich Deutsch verwenden.
+For inline code completions, please use only German.
 
-Auch Dokumentationen und Kommentare im Code sollen immer auf Deutsch verfasst werden.
+All documentation and comments in the code should also always be written in German.
