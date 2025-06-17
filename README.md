@@ -46,7 +46,7 @@ Das Sparklehorse geht folgendermaßen vor (vgl. Abbildung 1):
    Das Ergebnis der SQL-Abfrage wird in natürliche Sprache übersetzt und dem Nutzer als Antwort zurückgegeben.
 
 
-![Aktuelles Modell](img/curent_model_v_0.0.1.png)
+![Aktuelles Modell](img/curent_model_v_0.0.1.svg)
 
 **Abb. 1:** Sparklehorse (v.0.0.1)
 
