@@ -57,13 +57,21 @@ db = SQLDatabase.from_uri("duckdb:///data/view_magpie.db")
 # ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 # ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 # ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-# GENERATE AGENT-TOOLS -------------------------------------
+# GENERATE STANDARD-AGENT-TOOLS ----------------------------
 # ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 # ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 # ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 toolkit = SQLDatabaseToolkit(db=db, llm=llm)
 tools = toolkit.get_tools()
+
+# ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+# ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+# ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+# GENERATE CUSTOMIZED AGENT-TOOLS NR.1 variable_beschr -----
+# ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+# ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+# ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # `load_or_create_vectorstore` lädt einen lokal gespeicherten
@@ -191,3 +199,148 @@ def variable_beschr(user_question: str) -> str:
         return result
     else:
         return "[USER_CLARIFICATION_NEEDED] Ich konnte keine passende Variable finden. Bitte geben Sie die gewünschte Variable genauer an."
+
+# ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+# ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+# ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+# GENERATE CUSTOMIZED AGENT-TOOLS NR.2 variable_beschr -----
+# ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+# ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+# ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# `get_reichweite_beschr_list` ermittelt eine passende Reichweite
+#  basierend auf der Nutzerfrage und der zugehörigen Variable.
+#
+# Ablauf:
+# - Nutzt das `variable_beschr` Tool, um die passende Variable 
+#   aus der Frage zu ermitteln.
+# - Prüft, ob eine valide Variable extrahiert wurde, sonst Abbruch mit Fehlermeldung.
+# - Fragt die Datenbank nach allen gültigen Reichweiten für diese Variable ab.
+# - Falls keine Reichweiten gefunden werden, fordert der Bot zur Präzisierung auf.
+# - Baut einen InMemory-Vektorstore aus gültigen Reichweiten mit OpenAI-Embeddings auf.
+# - Ruft mit Retriever die 5 besten Kandidaten für die Nutzerfrage ab.
+# - Nutzt ein FewShot-Prompt mit Beispielen, um mittels LLM den besten Reichweiten-Wert zu
+#   bestimmen. Das FewShot-Prompt stellt dem LLM konkrete Beispiel-Frage-Variable-Reichweite-
+#   Paare zur Verfügung, um den Kontext und die richtige Auswahlmethode zu vermitteln (z.B. dann
+#   wenn trotz semantisch ähnlicherer Reichweite "Deutschland" die richtige Reichweite ist). Dadurch
+#   lernt das LLM anhand der Beispiele, die richtige Reichweite für die neue Frage präzise zu
+#   bestimmen, auch wenn die Nutzerfrage leicht variiert.
+# - Validiert, ob der vom LLM vorgeschlagene Wert unter den gültigen Reichweiten ist.
+# - Gibt den validen Wert zurück oder fordert den Nutzer zur Konkretisierung auf.
+#
+# Zweck:
+# - Präzise und kontextbasierte Ermittlung von Reichweiten aus freier Nutzereingabe.
+# - Verknüpft Embeddings-gestützte Suche mit FewShot-Lernen für bessere Ergebnisqualität.
+#
+# Voraussetzungen:
+# - `variable_beschr` Tool zur Variablenbestimmung muss vorhanden sein.
+# - `db` ist die Datenbankverbindung mit der Tabelle `view_daten_reichweite_menge`.
+# - `OpenAIEmbeddings`, `InMemoryVectorStore` und `llm` sind korrekt initialisiert.
+# - `reichweite_prompt` ist ein FewShotPromptTemplate mit passenden Beispielen.
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+from langchain.prompts import FewShotPromptTemplate, PromptTemplate
+
+reichweiten_beispiele = [
+    {"frage": "Wie viele Absolventen für Berufliche Schulen gab es?", "variable_beschr": "Anzahl der Absolventen für Berufliche Schulen", "reichweite_beschr_list": "Deutschland"},
+    {"frage": "Wie hoch war die Studierquote bildungsferner Schichten?", "variable_beschr": "Studierquote bildungsferne Schichten", "reichweite_beschr_list": "Deutschland"},
+    {"frage": "Wie viele dauerhaft eingestellte Lehrkräfte (inkl. Seiteneinsteigern, ohne Referendare) gab es?", "variable_beschr": "Anzahl dauerhaft eingestellte Lehrkräfte (inkl. Seiteneinsteigern, ohne Referendare)", "reichweite_beschr_list": "Deutschland"},
+    {"frage": "Wie hoch war der Handlungsfeldindex: Lehrer Bildung?", "variable_beschr": "Handlungsfeldindex: Lehrer Bildung", "reichweite_beschr_list": "Deutschland"},
+    {"frage": "Wie viele Universitätsschulverbünde gab es?", "variable_beschr": "Anzahl Universitätsschulverbünde", "reichweite_beschr_list": "Deutschland"},
+    {"frage": "Wie hoch war der Anteil berufsbegleitender Master?", "variable_beschr": "Anteil berufsbegleitender Master", "reichweite_beschr_list": "Deutschland"},
+    {"frage": "Wie viele Studienabsolventen T gab es?", "variable_beschr": "Studienabsolventen T", "reichweite_beschr_list": "Deutschland"},
+    {"frage": "Wie hoch waren die internen FuE-Aufwendungen?", "variable_beschr": "Interne FuE-Aufwendungen", "reichweite_beschr_list": "Deutschland"},
+    {"frage": "Wie hoch war der Anteil der männlichen Grundschullehramtsstudierenden?", "variable_beschr": "Anteil der männlichen Grundschullehramtsstudierende", "reichweite_beschr_list": "Deutschland"},
+    {"frage": "Wie viele Studienabsolventen im Weiterbildungsstudium gab es?", "variable_beschr": "Studienabsolventen im Weiterbildungsstudium", "reichweite_beschr_list": "Deutschland"},
+    {"frage": "Wie hoch waren die Drittmittel vom Bund 2021 in Deutschland?", "variable_beschr": "Drittmittel vom Bund", "reichweite_beschr_list": "Deutschland"}
+]
+
+example_prompt = PromptTemplate(
+    input_variables=["frage", "variable_beschr", "reichweite_beschr_list"],
+    template="Frage: {frage}\nVariable: {variable_beschr}\n→ Reichweite: {reichweite_beschr_list}"
+)
+
+reichweite_prompt = FewShotPromptTemplate(
+    examples=reichweiten_beispiele,
+    example_prompt=example_prompt,
+    prefix="Wähle aus den möglichen Reichweiten die beste. Nutze 'Deutschland', wenn keine Region, Organisation o. Ä. genannt wird.",
+    suffix="Frage: {frage}\nVariable: {variable_beschr}\nKandidaten:\n{kandidaten}\n→ Reichweite:",
+    input_variables=["frage", "variable_beschr", "kandidaten"]
+)
+
+@tool
+def get_reichweite_beschr_list(user_question: str) -> str:
+    """
+    Ermittelt eine passende Reichweite (z. B. Region, Organisation, etc.), basierend auf der
+    zur Frage gehörigen Variable und den verfügbaren Einträgen in der Datenbank.
+    """
+    print("[DEBUG] Eingabe-Frage:", user_question)
+
+    raw_variable = variable_beschr.run(user_question)
+    print("[DEBUG] raw_variable:", raw_variable)
+
+    match = re.search(r"'([^']+)'", str(raw_variable))
+    if not match:
+        print("[DEBUG] Abbruch: Keine gültige Variable extrahiert")
+        return "Fehler: Konnte keine gültige Variable bestimmen."
+
+    variable = match.group(1)
+    print("[DEBUG] bereinigte variable:", variable)
+
+    if "Error" in variable:
+        return "Fehler: Konnte keine gültige Variable bestimmen."
+
+    escaped_variable = variable.replace("'", "''")
+    print("[DEBUG] escaped_variable:", escaped_variable)
+
+    query = f"""
+        SELECT DISTINCT reichweite_beschr_list 
+        FROM view_daten_reichweite_menge 
+        WHERE variable_beschr = '{escaped_variable}'
+    """
+    print("[DEBUG] SQL-Abfrage gültige_reichweiten:", query)
+    gültige_reichweiten = query_as_list(db, query)
+    print("[DEBUG] gültige_reichweiten:", gültige_reichweiten)
+
+    if not gültige_reichweiten:
+        return "[USER_CLARIFICATION_NEEDED] Ich konnte keine passende Reichweite ermitteln. Bitte präzisieren Sie, welche Region oder Organisation gemeint ist."
+
+
+    vector_store = InMemoryVectorStore(OpenAIEmbeddings(model="text-embedding-3-large"))
+    _ = vector_store.add_texts(gültige_reichweiten)
+    retriever = vector_store.as_retriever(search_kwargs={"k": 5})
+
+    top_matches = retriever.get_relevant_documents(user_question)
+    reichweiten_kandidaten = [doc.page_content for doc in top_matches]
+    print("[DEBUG] Top 5 Reichweiten-Kandidaten:", reichweiten_kandidaten)
+
+    kandidaten_text = "\n".join(reichweiten_kandidaten)
+
+    llm_chain = reichweite_prompt | llm
+    best_match = llm_chain.invoke({
+        "frage": user_question,
+        "variable_beschr": variable,
+        "kandidaten": kandidaten_text
+    }).content.strip()
+
+    print("[DEBUG] LLM-best_match:", best_match)
+
+    # Validierung: nur erlaubte Rückgabe
+    if best_match not in gültige_reichweiten:
+        print(f"[DEBUG] LLM-Match ungültig ('{best_match}'), Rückfrage erforderlich")
+        return "[USER_CLARIFICATION_NEEDED] Ich konnte keine passende Reichweite ermitteln. Bitte konkretisieren Sie Ihre Anfrage."
+        
+    query = f"""
+        SELECT reichweite_beschr_list 
+        FROM view_daten_reichweite_menge 
+        WHERE reichweite_beschr_list = '{best_match}' 
+        LIMIT 1;
+    """
+    print("[DEBUG] SQL-Abfrage finale Auswahl:", query)
+    result = db.run_no_throw(query)
+    print("[DEBUG] Ergebnis:", result)
+
+    return result if result else "Error: Keine passende Reichweite gefunden."
+
+tools.extend([variable_beschr, get_reichweite_beschr_list])
