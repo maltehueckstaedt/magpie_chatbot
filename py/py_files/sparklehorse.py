@@ -27,7 +27,9 @@ from langchain_core.vectorstores import InMemoryVectorStore
 from langchain.agents.agent_toolkits import create_retriever_tool
 from langchain.chains import LLMChain
 from langchain_community.vectorstores.faiss import FAISS
-
+from langchain_chroma import Chroma
+from langchain.prompts.example_selector import SemanticSimilarityExampleSelector
+from langchain_openai import OpenAIEmbeddings
 
 # ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 # ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -255,17 +257,20 @@ from langchain.prompts import FewShotPromptTemplate, PromptTemplate
 
 reichweiten_beispiele = [
     {"frage": "Wie viele Absolventen für Berufliche Schulen gab es?", "variable_beschr": "Anzahl der Absolventen für Berufliche Schulen", "reichweite_beschr_list": "Deutschland"},
-    {"frage": "Wie hoch war die Studierquote bildungsferner Schichten?", "variable_beschr": "Studierquote bildungsferne Schichten", "reichweite_beschr_list": "Deutschland"},
-    {"frage": "Wie viele dauerhaft eingestellte Lehrkräfte (inkl. Seiteneinsteigern, ohne Referendare) gab es?", "variable_beschr": "Anzahl dauerhaft eingestellte Lehrkräfte (inkl. Seiteneinsteigern, ohne Referendare)", "reichweite_beschr_list": "Deutschland"},
-    {"frage": "Wie hoch war der Handlungsfeldindex: Lehrer Bildung?", "variable_beschr": "Handlungsfeldindex: Lehrer Bildung", "reichweite_beschr_list": "Deutschland"},
-    {"frage": "Wie viele Universitätsschulverbünde gab es?", "variable_beschr": "Anzahl Universitätsschulverbünde", "reichweite_beschr_list": "Deutschland"},
-    {"frage": "Wie hoch war der Anteil berufsbegleitender Master?", "variable_beschr": "Anteil berufsbegleitender Master", "reichweite_beschr_list": "Deutschland"},
-    {"frage": "Wie viele Studienabsolventen T gab es?", "variable_beschr": "Studienabsolventen T", "reichweite_beschr_list": "Deutschland"},
-    {"frage": "Wie hoch waren die internen FuE-Aufwendungen?", "variable_beschr": "Interne FuE-Aufwendungen", "reichweite_beschr_list": "Deutschland"},
     {"frage": "Wie hoch war der Anteil der männlichen Grundschullehramtsstudierenden?", "variable_beschr": "Anteil der männlichen Grundschullehramtsstudierende", "reichweite_beschr_list": "Deutschland"},
-    {"frage": "Wie viele Studienabsolventen im Weiterbildungsstudium gab es?", "variable_beschr": "Studienabsolventen im Weiterbildungsstudium", "reichweite_beschr_list": "Deutschland"},
+    {"frage": "Wie hohe Vollzeitäquivalente von Technischen FuE-Personal gab es im Jahr 2021?", "variable_beschr": "Technisches FuE-Personal", "reichweite_beschr_list": "Wirtschaftssektor | Deutschland"}, 
     {"frage": "Wie hoch waren die Drittmittel vom Bund 2021 in Deutschland?", "variable_beschr": "Drittmittel vom Bund", "reichweite_beschr_list": "Deutschland"}
 ]
+ 
+os.environ["LANGCHAIN_TRACING_V2"] = "false"
+
+# Beispielauswahl mit FAISS
+example_selector = SemanticSimilarityExampleSelector.from_examples(
+    examples=reichweiten_beispiele,
+    embeddings=OpenAIEmbeddings(model="text-embedding-3-large"),
+    vectorstore_cls=FAISS,
+    k=4
+)
 
 example_prompt = PromptTemplate(
     input_variables=["frage", "variable_beschr", "reichweite_beschr_list"],
@@ -273,9 +278,14 @@ example_prompt = PromptTemplate(
 )
 
 reichweite_prompt = FewShotPromptTemplate(
-    examples=reichweiten_beispiele,
+    example_selector=example_selector,
     example_prompt=example_prompt,
-    prefix="Wähle aus den möglichen Reichweiten die beste. Nutze 'Deutschland', wenn keine Region, Organisation o. Ä. genannt wird.",
+    prefix = (
+    "Wähle aus den möglichen Reichweiten die beste. "
+    "Gib ausschließlich die Reichweite als Ergebnis zurück, "
+    "ohne zusätzlichen Text oder Erklärungen. "
+    "Nutze 'Deutschland', wenn keine Region, Organisation o. Ä. genannt wird."
+    ), 
     suffix="Frage: {frage}\nVariable: {variable_beschr}\nKandidaten:\n{kandidaten}\n→ Reichweite:",
     input_variables=["frage", "variable_beschr", "kandidaten"]
 )
@@ -320,11 +330,11 @@ def get_reichweite_beschr_list(user_question: str) -> str:
 
     vector_store = InMemoryVectorStore(OpenAIEmbeddings(model="text-embedding-3-large"))
     _ = vector_store.add_texts(gültige_reichweiten)
-    retriever = vector_store.as_retriever(search_kwargs={"k": 5})
+    retriever = vector_store.as_retriever(search_kwargs={"k": 20})
 
     top_matches = retriever.get_relevant_documents(user_question)
     reichweiten_kandidaten = [doc.page_content for doc in top_matches]
-    print("[DEBUG] Top 5 Reichweiten-Kandidaten:", reichweiten_kandidaten)
+    print("[DEBUG] Top 20 Reichweiten-Kandidaten:", reichweiten_kandidaten)
 
     kandidaten_text = "\n".join(reichweiten_kandidaten)
 
